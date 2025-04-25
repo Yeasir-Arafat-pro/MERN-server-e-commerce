@@ -1,4 +1,4 @@
-const multer = require('multer');
+const multer = require('../multer');
 const { fileSize, fileType } = require('../secret');
 
 

@@ -17,7 +17,7 @@ const cors = require('cors')
 
 const app  = express()
 app.use(cors({
-    origin: 'http://localhost:5173', // আপনার React অ্যাপের ডোমেইন
+    //rigin: 'http://localhost:5173', // আপনার React অ্যাপের ডোমেইন
     credentials: true // কুকি আদান-প্রদানের অনুমতি দেয়
   }));
 // app.use((req, res, next) => {
@@ -27,7 +27,6 @@ app.use(cors({
 //   });
 // app.use(express.static('public'))
 app.use(cookieParser())
-app.use(express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded({
   extended: true

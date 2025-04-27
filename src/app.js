@@ -1,7 +1,7 @@
 // @ts-ignore
 const express = require('express')
 const cookieParser = require('cookie-parser')
-const morgan = require('morgan')
+//const morgan = require('morgan')
 const createError = require('http-errors')
 
 const rateLimit = require('express-rate-limit')
@@ -60,7 +60,7 @@ const rateLimiter = rateLimit({
 });
 
 app.use(rateLimiter)
-app.use(morgan('dev'))
+//app.use(morgan('dev'))
 
 
 app.use('/api/seed', seedRouter)

@@ -1,9 +1,9 @@
 // @ts-ignore
 const express = require('express')
 const cookieParser = require('cookie-parser')
-const morgan = require('morgan')
+//const morgan = require('morgan')
 const createError = require('http-errors')
-const xssClean = require('xss-clean')
+const xssClean = require('xss')
 const rateLimit = require('express-rate-limit')
 const seedRouter = require('./routes/seedRoute')
 const userRouter = require('./routes/usersRoute')
@@ -12,7 +12,6 @@ const authRouter = require('./routes/authRoute')
 const categoryRouter = require('./routes/categoryRoute')
 const productRouter = require('./routes/productRoute')
 const cors = require('cors')
-
 
 
 const app  = express()
@@ -61,7 +60,7 @@ const rateLimiter = rateLimit({
 
 app.use(rateLimiter)
 app.use(xssClean())
-app.use(morgan('dev'))
+//app.use(morgan('dev'))
 
 
 app.use('/api/seed', seedRouter)

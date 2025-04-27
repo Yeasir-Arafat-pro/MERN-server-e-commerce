@@ -45,7 +45,7 @@ const handleLogin = async (req, res, next) => {
         //লোকাল ডেভেলপমেন্টে (http://localhost) secure: false রাখতে হলে sameSite: 'lax' ব্যবহার করুন
 
         //token cookie
-        //  const accessToken =  createJSONwebToken({user},'access', '2h')
+          const accessToken =  createJSONwebToken({user},'access', '2h')
 
         //  res.cookie("accessToken", accessToken, {
         //     maxAge: 2*60*60*1000, //2 hours
@@ -58,11 +58,18 @@ const handleLogin = async (req, res, next) => {
          const refreshToken =  createJSONwebToken({user},'refresh', '7d')
          //set cookie
          res.cookie("refreshToken", refreshToken, {
-            maxAge: 7*24*60*60*1000, // 7days
-            httpOnly: true,
-            //secure: true,
-            sameSite: 'lax'
+            httpOnly: NODE_ENV === 'production' ? true : false, // XSS আক্রমণ প্রতিরোধ (সাধারণত true রাখা ভালো)
+            secure: NODE_ENV === 'production' ? true : false, // Production এ HTTPS বাধ্যতামূলক
+            sameSite: NODE_ENV === 'production' ? 'none' : 'lax', // Cross-site জন্য 'none'
+            domain: NODE_ENV === 'production' ? '.onrender.com' : 'localhost' // ডোমেইন স্পেসিফাই করুন
          })
+
+        //  res.cookie("refreshToken", refreshToken, {
+        //     maxAge: 7*24*60*60*1000, // 7days
+        //     httpOnly: true,
+        //     //secure: true,
+        //     sameSite: 'lax'
+        //  })
 
          const userWithoutPassword = user.toObject()
          delete userWithoutPassword.password;

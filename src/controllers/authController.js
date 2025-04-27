@@ -31,15 +31,26 @@ const handleLogin = async (req, res, next) => {
             throw createError(404, 'You are banned, please contact authority')
         }
 
-        //token cookie
-         const accessToken =  createJSONwebToken({user},'access', '2h')
+        res.cookie("accessToken", accessToken, {
+            maxAge: 2 * 60 * 60 * 1000, // 2 hours
+            httpOnly: true, // XSS আক্রমণ প্রতিরোধ (সাধারণত true রাখা ভালো)
+            secure: process.env.NODE_ENV === 'production', // Production এ HTTPS বাধ্যতামূলক
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // Cross-site জন্য 'none'
+            domain: process.env.NODE_ENV === 'production' ? 'https://mern-server-e-commerce-new.onrender.com' : 'localhost' // ডোমেইন স্পেসিফাই করুন
+          });
 
-         res.cookie("accessToken", accessToken, {
-            maxAge: 2*60*60*1000, //2 hours
-            httpOnly: false,
-            secure: false,
-            sameSite: 'lax'
-         })
+        //sameSite: 'none' ব্যবহার করলে অবশ্যই secure: true দিতে হবে
+        //লোকাল ডেভেলপমেন্টে (http://localhost) secure: false রাখতে হলে sameSite: 'lax' ব্যবহার করুন
+
+        //token cookie
+        //  const accessToken =  createJSONwebToken({user},'access', '2h')
+
+        //  res.cookie("accessToken", accessToken, {
+        //     maxAge: 2*60*60*1000, //2 hours
+        //     httpOnly: false,
+        //     secure: false,
+        //     sameSite: 'lax'
+        //  })
 
          //create refresh token
          const refreshToken =  createJSONwebToken({user},'refresh', '7d')

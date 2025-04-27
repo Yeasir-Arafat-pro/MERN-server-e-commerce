@@ -33,10 +33,10 @@ const handleLogin = async (req, res, next) => {
 
         res.cookie("accessToken", accessToken, {
             maxAge: 2 * 60 * 60 * 1000, // 2 hours
-            httpOnly: true, // XSS আক্রমণ প্রতিরোধ (সাধারণত true রাখা ভালো)
-            secure: process.env.NODE_ENV === 'production', // Production এ HTTPS বাধ্যতামূলক
+            httpOnly: process.env.NODE_ENV === 'production' ? true : false, // XSS আক্রমণ প্রতিরোধ (সাধারণত true রাখা ভালো)
+            secure: process.env.NODE_ENV === 'production' ? true : false, // Production এ HTTPS বাধ্যতামূলক
             sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // Cross-site জন্য 'none'
-            domain: process.env.NODE_ENV === 'production' ? '.mern-server-e-commerce-new.onrender.com' : 'localhost:8000' // ডোমেইন স্পেসিফাই করুন
+            domain: process.env.NODE_ENV === 'production' ? '.onrender.com' : 'localhost' // ডোমেইন স্পেসিফাই করুন
           });
 
         //sameSite: 'none' ব্যবহার করলে অবশ্যই secure: true দিতে হবে

@@ -8,6 +8,8 @@ const { findWithId } = require('../services/findItem');
 const { createJSONwebToken } = require('../helper/jsonwebtoken');
 const { clientUrl } = require('../secret');
 
+require('dotenv').config();
+
 const handleLogin = async (req, res, next) => {
 
     try {

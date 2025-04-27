@@ -28,7 +28,8 @@ const handleGetAllCategory = async (req, res, next)=> {
 
     try {
 
-      const getCategory = await getAllCategory()
+        const search = req.query.search || '';
+      const getCategory = await getAllCategory(search)
        
        return successResponse(res, {
             statusCode: 200,

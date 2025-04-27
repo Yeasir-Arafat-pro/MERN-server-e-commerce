@@ -71,7 +71,7 @@ const productScheema = new Schema(
 
   },
   {
-    timestams: true,
+    timestamps: true,
   }
 );
 

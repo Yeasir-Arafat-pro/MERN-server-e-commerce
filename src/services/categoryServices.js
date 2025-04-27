@@ -25,11 +25,22 @@ const createCategory = async (name) => {
 }
 
 
-const getAllCategory = async () => {
+const getAllCategory = async (search) => {
     
     try {
 
-      const getCategory = await Category.find().select('name slug').lean()
+        const searchRegExp = new RegExp('.*' + search+ '.*', 'i');
+        const filter= {
+            isAdmin: {$ne: true},
+            $or: [
+                {slug: {$regex: searchRegExp}},
+                {name: {$regex: searchRegExp}},
+            ]
+        }
+
+console.log(filter);
+
+      const getCategory = await Category.find(filter).select('name slug').lean()
      if (!getCategory) {
         throw createError(404, 'No categories found')
      }

@@ -6,9 +6,7 @@ const User = require('../medels/userModel');
 const { successResponse } = require('./responseController');
 const { findWithId } = require('../services/findItem');
 const { createJSONwebToken } = require('../helper/jsonwebtoken');
-const { clientUrl } = require('../secret');
-
-require('dotenv').config();
+const { clientUrl, NODE_ENV } = require('../secret');
 
 const handleLogin = async (req, res, next) => {
 
@@ -33,12 +31,14 @@ const handleLogin = async (req, res, next) => {
             throw createError(404, 'You are banned, please contact authority')
         }
 
+    
+
         res.cookie("accessToken", accessToken, {
             maxAge: 2 * 60 * 60 * 1000, // 2 hours
-            httpOnly: process.env.NODE_ENV === 'production' ? true : false, // XSS আক্রমণ প্রতিরোধ (সাধারণত true রাখা ভালো)
-            secure: process.env.NODE_ENV === 'production' ? true : false, // Production এ HTTPS বাধ্যতামূলক
-            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // Cross-site জন্য 'none'
-            domain: process.env.NODE_ENV === 'production' ? '.onrender.com' : 'localhost' // ডোমেইন স্পেসিফাই করুন
+            httpOnly: NODE_ENV === 'production' ? true : false, // XSS আক্রমণ প্রতিরোধ (সাধারণত true রাখা ভালো)
+            secure: NODE_ENV === 'production' ? true : false, // Production এ HTTPS বাধ্যতামূলক
+            sameSite: NODE_ENV === 'production' ? 'none' : 'lax', // Cross-site জন্য 'none'
+            domain: NODE_ENV === 'production' ? '.onrender.com' : 'localhost' // ডোমেইন স্পেসিফাই করুন
           });
 
         //sameSite: 'none' ব্যবহার করলে অবশ্যই secure: true দিতে হবে
